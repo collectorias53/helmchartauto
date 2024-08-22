@@ -34,14 +34,12 @@ stages:
       inputs:
         helmVersionToInstall: 'latest'
 
-    # Create the helmado1 directory
     - script: mkdir -p $(helmChartPath)
       displayName: 'Create helmado1 directory'
 
     - script: git clone $(helmRepoUrl) $(helmChartPath)
       displayName: 'Clone Helm chart repository into helmado1'
 
-    # List the contents of the helmado1 directory (optional for debugging)
     - script: ls -la $(helmChartPath)
       displayName: 'List contents of helmado1 directory'
 
@@ -57,7 +55,6 @@ stages:
         command: 'package'
         chartPath: '$(helmChartPath)'
         chartNameForACR: '$(helmChartName)'
-        chartPathForACR: '$(helmChartPath)'
         destination: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
@@ -77,6 +74,10 @@ stages:
         artifactName: 'drop'
         downloadPath: '$(System.ArtifactsDirectory)'
 
+    # List files to verify the Helm chart package
+    - script: ls -la $(System.ArtifactsDirectory)/drop
+      displayName: 'List contents of drop directory'
+
     # Deploy the Helm chart to the AKS cluster
     - task: HelmDeploy@1
       inputs:
@@ -86,7 +87,7 @@ stages:
         kubernetesCluster: '$(aksClusterName)'
         command: 'upgrade'
         chartType: 'FilePath'
-        chartPath: '$(System.ArtifactsDirectory)/drop/$(helmChartName)-*.tgz'
+        chartPath: '$(System.ArtifactsDirectory)/drop/nodesampleapi-0.1.0.tgz'
         releaseName: '$(helmReleaseName)'
         install: true
         waitForExecution: true
