@@ -86,7 +86,7 @@ stages:
         kubernetesCluster: '$(aksClusterName)'
         command: 'upgrade'
         chartType: 'FilePath'
-        chartPath: '$(System.ArtifactsDirectory)/drop/$(helmChartName)-*.tgz'
+        chartPath: '$(System.ArtifactsDirectory)/drop'
         releaseName: '$(helmReleaseName)'
         install: true
         waitForExecution: true
