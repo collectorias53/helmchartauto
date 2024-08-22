@@ -8,7 +8,7 @@ variables:
   acrName: 'kubeacr1'
   resourceGroupName: 'rgterra'
   aksClusterName: 'akstf'
-  helmRepoUrl: 'https://github.com/collectorias53/helmauto'
+  helmRepoUrl: 'https://github.com/collectorias53/helmchartauto'
   helmChartPath: '/home/vsts/work/1/s/helmado1'
 
 pool:
