@@ -3,6 +3,7 @@ trigger:
 
 variables:
   dockerImageName: 'nodejsimage'
+  helmChartPath: '/home/vsts/work/1/s/NodeJsSampleAPI-main'
 
 pool:
   vmImage: ubuntu-latest
