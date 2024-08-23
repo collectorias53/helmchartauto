@@ -1,16 +1,6 @@
 trigger:
 - master
 
-variables:
-  dockerImageName: 'nodejsimage'
-  helmChartName: 'myapp-chart'
-  helmReleaseName: 'myapp-release'
-  acrName: 'kubeacr1'
-  resourceGroupName: 'rgterra'
-  aksClusterName: 'akstf'
-  helmRepoUrl: 'https://github.com/collectorias53/helmchartauto'
-  helmChartPath: '/home/vsts/work/1/s/NodeJsSampleAPI-main'
-
 pool:
   vmImage: ubuntu-latest
 
