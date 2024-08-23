@@ -16,6 +16,7 @@ stages:
         repository: '$(dockerImageName)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
+        tags: 'latest' 
        
 
     - task: HelmInstaller@1
