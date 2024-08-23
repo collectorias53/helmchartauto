@@ -16,9 +16,7 @@ stages:
         repository: '$(dockerImageName)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-        tags: |
-          $(Build.BuildId)
-          latest
+       
 
     - task: HelmInstaller@1
       inputs:
@@ -34,7 +32,7 @@ stages:
       displayName: 'List contents of helmado1 directory'
 
     - script: |
-        sed -i 's|image: .*|image: $(acrName).azurecr.io/$(dockerImageName):$(Build.BuildId)|' $(helmChartPath)/values.yaml
+        sed -i 's|image: .*|image: $(acrName).azurecr.io/$(dockerImageName)|' $(helmChartPath)/values.yaml
       displayName: 'Update Helm chart with new image tag'
 
     - task: HelmDeploy@1
