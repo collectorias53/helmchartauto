@@ -1,11 +1,6 @@
 trigger:
 - master
 
-variables:
-  dockerImageName: 'nodejsimage'
-  helmChartPath: '/home/vsts/work/1/s/NodeJsSampleAPI-main'
-  helmRepoUrl: 'https://github.com/collectorias53/helmchartauto'
-
 pool:
   vmImage: ubuntu-latest
 
