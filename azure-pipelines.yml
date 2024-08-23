@@ -1,6 +1,9 @@
 trigger:
 - master
 
+variables:
+  dockerImageName: 'nodejsimage'
+
 pool:
   vmImage: ubuntu-latest
 
@@ -16,21 +19,28 @@ stages:
         repository: '$(dockerImageName)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-        tags: 'latest' 
-       
+        tags: |
+          $(Build.BuildId)
+          latest
 
     - task: HelmInstaller@1
       inputs:
         helmVersionToInstall: 'latest'
 
+    # Create the helmado1 directory
     - script: mkdir -p $(helmChartPath)
       displayName: 'Create helmado1 directory'
 
     - script: git clone $(helmRepoUrl) $(helmChartPath)
       displayName: 'Clone Helm chart repository into helmado1'
 
+    # List the contents of the helmado1 directory (optional for debugging)
     - script: ls -la $(helmChartPath)
       displayName: 'List contents of helmado1 directory'
+
+    - script: |
+        sed -i 's|image: .*|image: $(acrName).azurecr.io/$(dockerImageName):$(Build.BuildId)|' $(helmChartPath)/values.yaml
+      displayName: 'Update Helm chart with new image tag'
 
     - task: HelmDeploy@1
       inputs:
@@ -40,6 +50,7 @@ stages:
         command: 'package'
         chartPath: '$(helmChartPath)'
         chartNameForACR: '$(helmChartName)'
+        chartPathForACR: '$(helmChartPath)'
         destination: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
@@ -47,6 +58,7 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+
 
 # Deploy Stage
 - stage: Deploy
