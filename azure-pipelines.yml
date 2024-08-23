@@ -32,10 +32,6 @@ stages:
     - script: ls -la $(helmChartPath)
       displayName: 'List contents of helmado1 directory'
 
-    - script: |
-        sed -i 's|image: .*|image: $(acrName).azurecr.io/$(dockerImageName):latest|' $(helmChartPath)/values.yaml
-      displayName: 'Update Helm chart with new image tag'
-
     - task: HelmDeploy@1
       inputs:
         azureSubscriptionForACR: 'spconnection'
